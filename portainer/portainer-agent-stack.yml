@@ -24,17 +24,14 @@ services:
       - traefik-public
     deploy:
       labels:
-        - traefik.enable=true
-        - traefik.docker.network=traefik-public
-        - traefik.constraint-label=traefik-public
-        - traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
-        - traefik.http.routers.portainer-http.entrypoints=http
-        - traefik.http.routers.portainer-http.middlewares=https-redirect
-        - traefik.http.routers.portainer-https.rule=Host(`portainer.namemaster.online`)
-        - traefik.http.routers.portainer-https.entrypoints=https
-        - traefik.http.routers.portainer-https.tls=true
-        - traefik.http.routers.portainer-https.tls.certresolver=le
-        - traefik.http.services.portainer.loadbalancer.server.port=9000
+        - 'traefik.enable=true'
+        # Change the host url here
+        - 'traefik.http.routers.my-app.rule=Host(`whoami.example.com`)'
+        - 'traefik.http.services.my-app.loadbalancer.server.port=8082'
+        - 'traefik.http.routers.my-app.middlewares=auth'
+        - 'traefik.http.routers.my-app.entrypoints=websecure'
+        - 'traefik.http.routers.my-app.tls=true'
+        - 'traefik.http.routers.my-app.tls.certresolver=le'
       mode: replicated
       placement:
         constraints: [node.role == manager]
