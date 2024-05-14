@@ -30,18 +30,18 @@ services:
       replicas: 1 # Only one container of this type gonna run at a time.
       placement:
         constraints: [node.role == manager] # Will only be deployed on a manager node.
-      labels:
-        - traefik.enable=true
-        - traefik.docker.network=traefik-public
-        - traefik.constraint-label=traefik-public
-        - traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
-        - traefik.http.routers.portainer-http.entrypoints=http
-        - traefik.http.routers.portainer-http.middlewares=https-redirect
-        - traefik.http.routers.portainer-https.rule=Host(`portainer.namemaster.online`)
-        - traefik.http.routers.portainer-https.entrypoints=https
-        - traefik.http.routers.portainer-https.tls=true
-        - traefik.http.routers.portainer-https.tls.certresolver=le
-        - traefik.http.services.portainer.loadbalancer.server.port=9000
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.constraint-label=traefik-public
+      - traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
+      - traefik.http.routers.portainer-http.entrypoints=http
+      - traefik.http.routers.portainer-http.middlewares=https-redirect
+      - traefik.http.routers.portainer-https.rule=Host(`portainer.namemaster.online`)
+      - traefik.http.routers.portainer-https.entrypoints=https
+      - traefik.http.routers.portainer-https.tls=true
+      - traefik.http.routers.portainer-https.tls.certresolver=le
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
 networks:
   agent_network:
     driver: overlay
