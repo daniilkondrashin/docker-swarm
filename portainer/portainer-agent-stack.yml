@@ -20,24 +20,28 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # make sure the folder is available
       - /mnt/volume2/portainer:/data
+    ports:
+      - "9000:9000"
+      - "8000:8000"
     networks:
       - traefik-public
     deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
+        - traefik.http.routers.portainer-http.entrypoints=http
+        - traefik.http.routers.portainer-http.middlewares=https-redirect
+        - traefik.http.routers.portainer-https.rule=Host(`portainer.namemaster.online`)
+        - traefik.http.routers.portainer-https.entrypoints=https
+        - traefik.http.routers.portainer-https.tls=true
+        - traefik.http.routers.portainer-https.tls.certresolver=le
+        - traefik.http.services.portainer.loadbalancer.server.port=9000
       mode: replicated
       placement:
         constraints: [node.role == manager]
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.constraint-label=traefik-public
-      - traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
-      - traefik.http.routers.portainer-http.entrypoints=http
-      - traefik.http.routers.portainer-http.middlewares=https-redirect
-      - traefik.http.routers.portainer-https.rule=Host(`portainer.namemaster.online`)
-      - traefik.http.routers.portainer-https.entrypoints=https
-      - traefik.http.routers.portainer-https.tls=true
-      - traefik.http.routers.portainer-https.tls.certresolver=le
-      - traefik.http.services.portainer.loadbalancer.server.port=9000
+
 networks:
   traefik-public:
     external: true
