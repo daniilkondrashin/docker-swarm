@@ -29,7 +29,7 @@ services:
     labels:
       - 'traefik.enable=true'
         # change the host here
-      - 'traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
+      - traefik.http.routers.portainer-http.rule=Host(`portainer.namemaster.online`)
       - 'traefik.http.services.portainer.loadbalancer.server.port=9000'
       - 'traefik.http.routers.portainer.entrypoints=websecure'
       - 'traefik.http.routers.portainer.tls=true'
