@@ -45,7 +45,7 @@ services:
 
 networks:
   agent_network:
-    driver: overlay
+    driver: bridge
     attachable: true
   traefik-public:
     external: true
