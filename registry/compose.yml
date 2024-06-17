@@ -14,7 +14,8 @@ services:
       labels:
         - "traefik.enable=true"
         - traefik.docker.network=traefik-public
-        - "traefik.http.routers.registry.rule=Host(`api.registry.viomitra.ru)"
+        - traefik.http.routers.registry-http.rule=Host(`api.registry.viomitra.ru`)
+        - traefik.http.routers.registry-https.rule=Host(`api.registry.viomitra.ru`)
         - traefik.http.routers.registry-http.entrypoints=http
         - "traefik.http.routers.registry-https.tls.certresolver=le"
         - "traefik.http.routers.registry.service=registry"
