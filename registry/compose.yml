@@ -13,20 +13,14 @@ services:
         constraints: [node.role == manager]
       labels:
         - "traefik.enable=true"
+        - traefik.docker.network=traefik-public
         - "traefik.http.routers.registry.rule=Host(`api.registry.viomitra.ru)"
-        - "traefik.http.routers.registry.entrypoints=websecure"
         - "traefik.http.routers.registry.tls.certresolver=myresolver"
         - "traefik.http.routers.registry.service=registry"
         - "traefik.http.services.registry.loadbalancer.server.port=5000"
         - "traefik.http.routers.registry.middlewares=auth-registry,traefik-compress"
         - "traefik.http.middlewares.auth-registry.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
         - "traefik.http.routers.guest-registry.rule=Host(`api.registry.viomitra.ru`)"
-        - "traefik.http.routers.guest-registry.entrypoints=websecure"
-        - "traefik.http.routers.guest-registry.tls.certresolver=myresolver"
-        - "traefik.http.routers.guest-registry.service=guest-registry"
-        - "traefik.http.services.guest-registry.loadbalancer.server.port=5000"
-        - "traefik.http.routers.guest-registry.middlewares=aguest-registry,traefik-compress"
-        - "traefik.http.middlewares.aguest-registry.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
     networks:
       - registry
       - traefik-public
