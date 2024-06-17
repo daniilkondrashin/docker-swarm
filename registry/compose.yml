@@ -24,6 +24,7 @@ services:
           - "traefik.http.routers.guest-registry-secure.rule=Host(`api.registry.viomitra.ru`) && Method(`GET`, `HEAD`)"
           - "traefik.http.routers.guest-registry-secure.tls=true"
           - "traefik.http.routers.guest-registry-secure.service=guest-registry"
+          - "traefik.http.middlewares.guest-registry-auth.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
           - "traefik.http.routers.guest-registry-secure.middlewares=guest-registry-auth"
           - "traefik.http.services.guest-registry.loadbalancer.server.port=5000"
     networks:
