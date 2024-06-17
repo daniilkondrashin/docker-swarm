@@ -12,21 +12,21 @@ services:
       placement:
         constraints: [node.role == manager]
       labels:
-          - "traefik.enable=true" 
-          - "traefik.http.routers.registry-secure.entrypoints=https"
-          - "traefik.http.routers.registry-secure.rule=Host(`api.registry.viomitra.ru`)"
-          - "traefik.http.routers.registry-secure.tls=true"
-          - "traefik.http.routers.registry-secure.service=registry"
-          - "traefik.http.middlewares.registry-auth.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
-          - "traefik.http.routers.registry-secure.middlewares=registry-auth"
-          - "traefik.http.services.registry.loadbalancer.server.port=5000"
-          - "traefik.http.routers.guest-registry-secure.entrypoints=https"
-          - "traefik.http.routers.guest-registry-secure.rule=Host(`api.registry.viomitra.ru`)"
-          - "traefik.http.routers.guest-registry-secure.tls=true"
-          - "traefik.http.routers.guest-registry-secure.service=guest-registry"
-          - "traefik.http.middlewares.guest-registry-auth.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
-          - "traefik.http.routers.guest-registry-secure.middlewares=guest-registry-auth"
-          - "traefik.http.services.guest-registry.loadbalancer.server.port=5000"
+        - "traefik.enable=true"
+        - "traefik.http.routers.registry.rule=Host(`api.registry.viomitra.ru) && Method(`POST`, `PUT`, `DELETE`, `PATCH`)"
+        - "traefik.http.routers.registry.entrypoints=websecure"
+        - "traefik.http.routers.registry.tls.certresolver=myresolver"
+        - "traefik.http.routers.registry.service=registry"
+        - "traefik.http.services.registry.loadbalancer.server.port=5000"
+        - "traefik.http.routers.registry.middlewares=auth-registry,traefik-compress"
+        - "traefik.http.middlewares.auth-registry.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
+        - "traefik.http.routers.guest-registry.rule=Host(`api.registry.viomitra.ru`) && Method(`GET`, `HEAD`)"
+        - "traefik.http.routers.guest-registry.entrypoints=websecure"
+        - "traefik.http.routers.guest-registry.tls.certresolver=myresolver"
+        - "traefik.http.routers.guest-registry.service=guest-registry"
+        - "traefik.http.services.guest-registry.loadbalancer.server.port=5000"
+        - "traefik.http.routers.guest-registry.middlewares=aguest-registry,traefik-compress"
+        - "traefik.http.middlewares.aguest-registry.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
     networks:
       - registry
       - traefik-public
