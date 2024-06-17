@@ -15,7 +15,7 @@ services:
         - "traefik.enable=true"
         - traefik.docker.network=traefik-public
         - "traefik.http.routers.registry.rule=Host(`api.registry.viomitra.ru)"
-        - "traefik.http.routers.registry.tls.certresolver=myresolver"
+        - "traefik.http.routers.registry-https.tls.certresolver=le"
         - "traefik.http.routers.registry.service=registry"
         - "traefik.http.services.registry.loadbalancer.server.port=5000"
         - "traefik.http.routers.registry.middlewares=auth-registry,traefik-compress"
