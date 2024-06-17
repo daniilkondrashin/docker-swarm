@@ -39,17 +39,16 @@ services:
       placement:
         constraints: [node.role == manager]
       labels:
-        - traefik.enable=true
+        - "traefik.enable=true"
         - traefik.docker.network=traefik-public
-        - traefik.constraint-label=traefik-public
-        - traefik.http.routers.portainer-http.rule=Host(`ui.registry.viomitra.ru`)
-        - traefik.http.routers.portainer-http.entrypoints=http
-        - traefik.http.routers.portainer-http.middlewares=https-redirect
-        - traefik.http.routers.portainer-https.rule=Host(`ui.registry.viomitra.ru`)
-        - traefik.http.routers.portainer-https.entrypoints=https
-        - traefik.http.routers.portainer-https.tls=true
-        - traefik.http.routers.portainer-https.tls.certresolver=le
-        - traefik.http.services.portainer.loadbalancer.server.port=80
+        - traefik.http.routers.registry_ui-http.rule=Host(`ui.registry.viomitra.ru`)
+        - traefik.http.routers.registry_ui-https.rule=Host(`ui.registry.viomitra.ru`)
+        - traefik.http.routers.registry_ui-http.entrypoints=http
+        - "traefik.http.routers.registry_ui-https.tls.certresolver=le"
+        - "traefik.http.routers.registry_ui.service=registry"
+        - traefik.http.routers.registry_ui-https.tls=true
+        - "traefik.http.services.registry_ui.loadbalancer.server.port=5000"
+        - "traefik.http.middlewares.auth-registry_ui.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
     depends_on:
       - registry
     networks:
