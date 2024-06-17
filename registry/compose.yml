@@ -47,7 +47,7 @@ services:
         - "traefik.http.routers.registry_ui-https.tls.certresolver=le"
         - "traefik.http.routers.registry_ui.service=registry"
         - traefik.http.routers.registry_ui-https.tls=true
-        - "traefik.http.services.registry_ui.loadbalancer.server.port=5000"
+        - "traefik.http.services.registry_ui.loadbalancer.server.port=80"
         - "traefik.http.middlewares.auth-registry_ui.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
     depends_on:
       - registry
