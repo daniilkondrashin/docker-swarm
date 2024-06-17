@@ -9,6 +9,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      ports:
+      - 5000:5000
       placement:
         constraints: [node.role == manager]
       labels:

@@ -5,6 +5,7 @@ services:
   traefik:
     # Use the latest v3.0.x Traefik image available
     image: traefik:v3.0
+    restart: always
     ports:
       # Listen on port 80, default for HTTP, necessary to redirect to HTTPS
       - 80:80
