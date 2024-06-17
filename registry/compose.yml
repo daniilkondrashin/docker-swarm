@@ -15,10 +15,13 @@ services:
         - "traefik.enable=true"
         - traefik.docker.network=traefik-public
         - "traefik.http.routers.registry.rule=Host(`api.registry.viomitra.ru)"
+        - traefik.http.routers.portainer-http.entrypoints=http
+        - traefik.http.routers.portainer-http.middlewares=https-redirect
+        - traefik.http.routers.portainer-https.entrypoints=https
         - "traefik.http.routers.registry-https.tls.certresolver=le"
         - "traefik.http.routers.registry.service=registry"
+        - traefik.http.routers.portainer-https.tls=true
         - "traefik.http.services.registry.loadbalancer.server.port=5000"
-        - "traefik.http.routers.registry.middlewares=auth-registry,traefik-compress"
         - "traefik.http.middlewares.auth-registry.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
         - "traefik.http.routers.guest-registry.rule=Host(`api.registry.viomitra.ru`)"
     networks:
