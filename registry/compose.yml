@@ -20,18 +20,14 @@ services:
         constraints: [node.role == manager]
       labels:
         - traefik.enable=true
-        - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.registry-http.rule=Host(`api.registry.viomitra.ru`)
-        - traefik.http.routers.registry-http.entrypoints=http
-        - traefik.http.routers.registry-http.middlewares=https-redirect
-        - traefik.http.routers.registry-https.rule=Host(`api.registry.viomitra.ru`)
-        - traefik.http.routers.registry-https.entrypoints=https
-        - traefik.http.routers.registry-https.tls=true
-        - traefik.http.routers.registry-https.tls.certresolver=le
-        - traefik.http.services.registry.loadbalancer.server.port=5000
-        - traefik.http.middlewares.registry.ratelimit.average=120
-        - traefik.http.middlewares.registry.ratelimit.period=2m
+        - traefik.http.routers.whoami.entrypoints=websecure
+        - traefik.http.routers.whoami.rule=Host(`api.registry.viomitra.ru`)
+        - traefik.http.routers.whoami.tls=true
+        # min TLS version
+        - traefik.http.routers.whoami.tls.certresolver=le
+        - traefik.http.routers.whoami.middlewares=traefik-ratelimit
+        - traefik.http.services.whoami.loadbalancer.server.port=5000
     networks:
       - registry
       - traefik-public
