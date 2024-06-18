@@ -88,7 +88,7 @@ services:
       - --log
       # Enable the Dashboard and API
       - --api
-      - --entryPoints.websecure.transport.respondingTimeouts.readTimeout=0
+      # - --entryPoints.websecure.transport.respondingTimeouts.readTimeout=0
     networks:
       # Use the public network created to be shared between Traefik and
       # any other service that needs to be publicly available with HTTPS
