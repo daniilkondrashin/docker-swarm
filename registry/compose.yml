@@ -29,6 +29,8 @@ services:
         - traefik.http.routers.registry-https.tls=true
         - traefik.http.routers.registry-https.tls.certresolver=le
         - traefik.http.services.registry.loadbalancer.server.port=5000
+        - traefik.http.middlewares.registryratelimit.average=6
+        - traefik.http.middlewares.registry.ratelimit.period=2m
     networks:
       - registry
       - traefik-public
