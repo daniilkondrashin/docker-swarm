@@ -21,10 +21,10 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.registry-http.rule=Host(`api.registry.viomitra.ru`)
+        - traefik.http.routers.registry-http.rule=Host(`api.registry.viomitra.ru`) && Method(`POST`, `PUT`, `DELETE`, `PATCH`)
         - traefik.http.routers.registry-http.entrypoints=http
         - traefik.http.routers.registry-http.middlewares=https-redirect
-        - traefik.http.routers.registry-https.rule=Host(`api.registry.viomitra.ru`)
+        - traefik.http.routers.registry-https.rule=Host(`api.registry.viomitra.ru`) && Method(`POST`, `PUT`, `DELETE`, `PATCH`)
         - traefik.http.routers.registry-https.entrypoints=https
         - traefik.http.routers.registry-https.tls=true
         - traefik.http.routers.registry-https.tls.certresolver=le
