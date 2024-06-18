@@ -6,22 +6,28 @@ services:
     container_name: registry
     volumes:
       - registrydata:/data
+    environment:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints: [node.role == manager]
       labels:
-        - "traefik.enable=true"
+        - traefik.enable=true
         - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
         - traefik.http.routers.registry-http.rule=Host(`api.registry.viomitra.ru`)
-        - traefik.http.routers.registry-https.rule=Host(`api.registry.viomitra.ru`)
         - traefik.http.routers.registry-http.entrypoints=http
-        - "traefik.http.routers.registry-https.tls.certresolver=le"
-        - "traefik.http.routers.registry.service=registry"
+        - traefik.http.routers.registry-http.middlewares=https-redirect
+        - traefik.http.routers.registry-https.rule=Host(`api.registry.viomitra.ru`)
+        - traefik.http.routers.registry-https.entrypoints=https
         - traefik.http.routers.registry-https.tls=true
-        - "traefik.http.services.registry.loadbalancer.server.port=5000"
-        - "traefik.http.middlewares.auth-registry.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
+        - traefik.http.routers.registry-https.tls.certresolver=le
+        - traefik.http.services.registry.loadbalancer.server.port=5000
     networks:
       - registry
       - traefik-public
@@ -39,16 +45,17 @@ services:
       placement:
         constraints: [node.role == manager]
       labels:
-        - "traefik.enable=true"
+        - traefik.enable=true
         - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
         - traefik.http.routers.registry_ui-http.rule=Host(`ui.registry.viomitra.ru`)
-        - traefik.http.routers.registry_ui-https.rule=Host(`ui.registry.viomitra.ru`)
         - traefik.http.routers.registry_ui-http.entrypoints=http
-        - "traefik.http.routers.registry_ui-https.tls.certresolver=le"
-        - "traefik.http.routers.registry_ui.service=registry_ui"
+        - traefik.http.routers.registry_ui-http.middlewares=https-redirect
+        - traefik.http.routers.registry_ui-https.rule=Host(`ui.registry.viomitra.ru`)
+        - traefik.http.routers.registry_ui-https.entrypoints=https
         - traefik.http.routers.registry_ui-https.tls=true
-        - "traefik.http.services.registry_ui.loadbalancer.server.port=80"
-        - "traefik.http.middlewares.auth-registry_ui.basicauth.users=reguser:$$2y$$05$$dkGwIwecWdYE2mDXPNHzlO.M7AGLMjr2MsSjJTylxWdK35JivqyHS"
+        - traefik.http.routers.registry_ui-https.tls.certresolver=le
+        - traefik.http.services.registry_ui.loadbalancer.server.port=80
     depends_on:
       - registry
     networks:
