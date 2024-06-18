@@ -52,6 +52,10 @@ services:
         - "traefik.http.middlewares.limit.buffering.memRequestBodyBytes=1048576000"
         - "traefik.http.middlewares.limit.buffering.maxResponseBodyBytes=1048576000"
         - "traefik.http.middlewares.limit.buffering.memResponseBodyBytes=1048576000"
+        - "traefik.http.middlewares.another-redirect-http.ratelimit.average=200"
+        - "traefik.http.middlewares.another-redirect-http.ratelimit.burst=50"
+        - "traefik.http.middlewares.another-redirect-https.ratelimit.average=200"
+        - "traefik.http.middlewares.another-redirect-https.ratelimit.burst=50"
         # Enable HTTP Basic auth, using the middleware created above
         - traefik.http.routers.traefik-public-https.middlewares=admin-auth
         # Define the port inside of the Docker service to use
