@@ -25,7 +25,6 @@ services:
         # This public Traefik will only use services with this label
         # That way you can add other internal Traefik instances per stack if needed
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.backoffice.middlewares=upload-limit
         # admin-auth middleware with HTTP Basic auth
         # Using the environment variables USERNAME and HASHED_PASSWORD
         - traefik.http.middlewares.admin-auth.basicauth.users=${USERNAME?Variable not set}:${HASHED_PASSWORD?Variable not set}
