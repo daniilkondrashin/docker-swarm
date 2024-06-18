@@ -55,7 +55,6 @@ services:
     volumes:
       # Add Docker as a mounted volume, so that Traefik can read the labels of other services
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - "./traefik.yml:/etc/traefik/traefik.yml"
       # Mount the volume to store the certificates
       - traefik-public-certificates:/certificates
     command:
@@ -83,8 +82,6 @@ services:
       - --log
       # Enable the Dashboard and API
       - --api
-      - "--entrypoints.websecure.http.middlewares=my-max-body-size@file"
-      - "--providers.file.filename=/etc/traefik/traefik.yml"
     networks:
       # Use the public network created to be shared between Traefik and
       # any other service that needs to be publicly available with HTTPS
