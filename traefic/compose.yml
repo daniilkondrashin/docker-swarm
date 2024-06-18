@@ -29,7 +29,7 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.middlewares.upload-limit.buffering.maxRequestBodyBytes=1048576000  
         - "traefik.http.middlewares.test-ratelimit.ratelimit.average=6"
-        - "traefik.http.middlewares.test-ratelimit.ratelimit.period=1m"
+        - "traefik.http.middlewares.test-ratelimit.ratelimit.period=2m"
         - traefik.http.routers.backoffice.middlewares=upload-limit
         # admin-auth middleware with HTTP Basic auth
         # Using the environment variables USERNAME and HASHED_PASSWORD
@@ -44,7 +44,7 @@ services:
         - traefik.http.routers.traefik-public-http.entrypoints=http
         - traefik.http.routers.traefik-public-http.middlewares=https-redirect
         # traefik-https the actual router using HTTPS
-        # Uses the environment variable DOMAIN
+        # Uses the environment variable DOMAI
         - traefik.http.routers.traefik-public-https.rule=Host(`${DOMAIN?Variable not set}`)
         - traefik.http.routers.traefik-public-https.entrypoints=https
         - traefik.http.routers.traefik-public-https.tls=true
