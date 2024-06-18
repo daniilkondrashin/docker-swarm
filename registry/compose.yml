@@ -12,6 +12,8 @@ services:
       REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+      REGISTRY_HTTP_IDLETIMEOUT: 120
+      REGISTRY_HTTP_READTIMEOUT: 300
     deploy:
       mode: replicated
       replicas: 1
