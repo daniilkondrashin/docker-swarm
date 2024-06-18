@@ -85,8 +85,6 @@ services:
       - --api
       - "--entrypoints.websecure.http.middlewares=my-max-body-size@file"
       - "--providers.file.filename=/etc/traefik/traefik.yml"
-      - "--entrypoints.websecure.forwardHeaders.trustedIPs=0.0.0.0/0"
-      - "--entrypoints.websecure.proxyProtocol.trustedIPs=0.0.0.0/0"
     networks:
       # Use the public network created to be shared between Traefik and
       # any other service that needs to be publicly available with HTTPS
