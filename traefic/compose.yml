@@ -22,6 +22,7 @@ services:
         - traefik.enable=true
         # Use the traefik-public network (declared below)
         - traefik.docker.network=traefik-public
+        - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=2000000"
         # Use the custom label "traefik.constraint-label=traefik-public"
         # This public Traefik will only use services with this label
         # That way you can add other internal Traefik instances per stack if needed
