@@ -28,8 +28,6 @@ services:
         # That way you can add other internal Traefik instances per stack if needed
         - traefik.constraint-label=traefik-public
         - traefik.http.middlewares.upload-limit.buffering.maxRequestBodyBytes=1048576000  
-        - traefik.http.middlewares.test-ratelimit.ratelimit.average=120
-        - traefik.http.middlewares.test-ratelimit.ratelimit.period=2m
         - traefik.http.routers.backoffice.middlewares=upload-limit
         # admin-auth middleware with HTTP Basic auth
         # Using the environment variables USERNAME and HASHED_PASSWORD
