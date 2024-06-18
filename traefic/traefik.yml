@@ -1,6 +1,0 @@
-entryPoints:
-  name:
-    address: ":5000"
-    transport:
-      respondingTimeouts:
-        readTimeout: 0s
