@@ -69,7 +69,7 @@ services:
       - --providers.docker.constraints=Label(`traefik.constraint-label`, `traefik-public`)
       # Do not expose all Docker services, only the ones explicitly exposed
       - --providers.docker.exposedbydefault=false
-      - --providers.docker.swarmMode=true
+      # - --providers.docker.swarmMode=true
       # Enable Docker Swarm mode
       - --providers.swarm.endpoint=unix:///var/run/docker.sock
       # Create an entrypoint "http" listening on port 80
