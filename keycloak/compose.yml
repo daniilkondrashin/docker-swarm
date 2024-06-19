@@ -40,8 +40,7 @@ services:
     expose:
       - 8080:8080
     depends_on:
-      keycloak-postgres:
-        condition: service_healthy
+      - keycloak-postgres
     healthcheck:
       test: ["CMD", "curl", "-f", "http://0.0.0.0:8080/realms/master"]
       start_period: 10s
