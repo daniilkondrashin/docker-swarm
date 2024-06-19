@@ -72,7 +72,7 @@ networks:
   traefik-public:
     external: true
   keycloak-bridge:
-    driver: bridge
+    driver: overlay
 
 volumes:
   postgres_data:
