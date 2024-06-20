@@ -20,7 +20,7 @@ services:
       - 24224:24224
       - 24224:24224/udp
     networks:
-      - nginx_nginx-proxy-manager
+      - traefik-public
     deploy:
       mode: replicated
       replicas: 1
