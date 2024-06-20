@@ -1,0 +1,94 @@
+version: "3"
+
+# Define the Docker volume named esdata for the Elasticsearch container.
+volumes:
+  esdata:
+
+# Deploying three container services (fluentd, elasticsearch, and kibana)
+services:
+# Deploy using the custom image automatically be created during the build process.
+  fluentd: 
+    build: ./fluentd
+    restart: always
+    links: # Sends incoming logs to the elasticsearch container.
+      - elasticsearch
+    volumes:
+      - ./fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
+    depends_on:
+      - elasticsearch
+    ports: # Exposes the port 24224 on both TCP and UDP protocol for log aggregation
+      - 24224:24224
+      - 24224:24224/udp
+    networks:
+      - nginx_nginx-proxy-manager
+    mem_limit: ${FD_MEM_LIMIT}
+
+# Created using the Docker image elasticsearch:7.17.0
+  elasticsearch:
+    image: elasticsearch:${STACK_VERSION}
+    environment:
+      - discovery.type=single-node # Runs as a single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - http.host=0.0.0.0
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - network.host=0.0.0.0
+      - xpack.security.transport.ssl.enabled=false
+    volumes: # Stores elasticsearch data locally on the esdata Docker volume
+      - esdata:/usr/share/elasticsearch/data
+    mem_limit: ${ES_MEM_LIMIT}
+    networks:
+      - traefik-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.elasticsearch-http.rule=Host(`elastic.viomitra.ru`)
+        - traefik.http.routers.elasticsearch-http.entrypoints=http
+        - traefik.http.routers.elasticsearch-http.middlewares=https-redirect
+        - traefik.http.routers.elasticsearch-https.rule=Host(`elastic.viomitra.ru`)
+        - traefik.http.routers.elasticsearch-https.entrypoints=https
+        - traefik.http.routers.elasticsearch-https.tls=true
+        - traefik.http.routers.elasticsearch-https.tls.certresolver=le
+        - traefik.http.services.elasticsearch.loadbalancer.server.port=9200
+# Created using the Docker image kibana:7.17.0
+  kibana:
+    image: kibana:${STACK_VERSION}
+    links: # Links kibana service to the elasticsearch container
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    environment: # Defined host configuration
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    mem_limit: ${KB_MEM_LIMIT}
+    networks:
+      - traefik-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.kibana-http.rule=Host(`kibana.viomitra.ru`)
+        - traefik.http.routers.kibana-http.entrypoints=http
+        - traefik.http.routers.kibana-http.middlewares=https-redirect
+        - traefik.http.routers.kibana-https.rule=Host(`kibana.viomitra.ru`)
+        - traefik.http.routers.kibana-https.entrypoints=https
+        - traefik.http.routers.kibana-https.tls=true
+        - traefik.http.routers.kibana-https.tls.certresolver=le
+        - traefik.http.services.kibana.loadbalancer.server.port=5601
+
+networks:
+  nginx_nginx-proxy-manager:
+    external: true
