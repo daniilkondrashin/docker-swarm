@@ -2,10 +2,7 @@ version: "3.7"
 
 services:
   fluentd:
-    build:
-      context: ./fluentd
-      dockerfile: Dockerfile
-    restart: always
+    image: api.registry.viomitra.ru/fluentd:latest
     volumes:
       - ./fluentd/conf/fluent.conf:/fluentd/etc/fluent.conf
     ports:
