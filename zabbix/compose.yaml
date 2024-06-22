@@ -88,6 +88,8 @@ services:
         constraints: [node.role == manager]
       labels:
         - traefik.enable=false
+    ports:
+      - "10050:10050"
 
 volumes:
   postgresql-data:
