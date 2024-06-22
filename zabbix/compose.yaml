@@ -59,9 +59,7 @@ services:
       ZBX_SERVER_HOST: zabbix-server
       PHP_TZ: ${PHP_TZ}
     ports:
-      - target: 8080   # Порт внутри контейнера
-        published: 8080 # Порт на хосте (если нужно открыть наружу, иначе можно убрать)
-        mode: host
+      - "8080:8080"
     volumes:
       - zabbix-web-data:/usr/share/zabbix
     deploy:
