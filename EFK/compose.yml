@@ -18,9 +18,11 @@ services:
       resources:
         limits:
           memory: 3g
+      labels:
+        - "traefik.enable=false"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.1
+    image: elasticsearch:8.14.1
     environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -56,7 +58,7 @@ services:
         - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.14.1
+    image: kibana:8.14.1
     depends_on:
       - elasticsearch
     environment:
@@ -65,6 +67,8 @@ services:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     networks:
       - traefik-public
+    ports: # Runs kibana service on default port 5601
+      - 5601:5601
     deploy:
       mode: replicated
       replicas: 1
