@@ -58,8 +58,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       ZBX_SERVER_HOST: zabbix-server
       PHP_TZ: ${PHP_TZ}
-    ports:
-      - "8080:8080"
     volumes:
       - zabbix-web-data:/usr/share/zabbix
     deploy:
