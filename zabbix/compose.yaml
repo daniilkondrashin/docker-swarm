@@ -75,7 +75,7 @@ services:
         - traefik.http.routers.zabbix-https.tls=true
         - traefik.http.routers.zabbix-https.tls.certresolver=le
         - traefik.http.services.zabbix.loadbalancer.server.port=8080
-      networks:
+    networks:
       - traefik-public
 
   # zabbix-agent:
