@@ -68,28 +68,38 @@ services:
       placement:
         constraints: [node.role == manager]
       labels:
-        - traefik.enable=false
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.zabbix-http.rule=Host(`zabbix.viomitra.ru`)
+        - traefik.http.routers.zabbix-http.entrypoints=http
+        - traefik.http.routers.zabbix-http.middlewares=https-redirect
+        - traefik.http.routers.zabbix-https.rule=Host(`zabbix.viomitra.ru`)
+        - traefik.http.routers.zabbix-https.entrypoints=https
+        - traefik.http.routers.zabbix-https.tls=true
+        - traefik.http.routers.zabbix-https.tls.certresolver=le
+        - traefik.http.services.zabbix.loadbalancer.server.port=80
 
-  zabbix-agent:
-    image: zabbix/zabbix-agent:latest
-    container_name: zabbix-agent
-    restart: unless-stopped
-    depends_on:
-      - zabbix-server
-    environment:
-      ZBX_HOSTNAME: "Zabbix server"
-      ZBX_SERVER_HOST: zabbix-server
-      ZBX_SERVER_PORT: '10051'
-      ZBX_SERVER_ACTIVE: zabbix-server
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      labels:
-        - traefik.enable=false
-    ports:
-      - "10050:10050"
+  # zabbix-agent:
+  #   image: zabbix/zabbix-agent:latest
+  #   container_name: zabbix-agent
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - zabbix-server
+  #   environment:
+  #     ZBX_HOSTNAME: "Zabbix server"
+  #     ZBX_SERVER_HOST: zabbix-server
+  #     ZBX_SERVER_PORT: '10051'
+  #     ZBX_SERVER_ACTIVE: zabbix-server
+  #   deploy:
+  #     mode: replicated
+  #     replicas: 1
+  #     placement:
+  #       constraints: [node.role == manager]
+  #     labels:
+  #       - traefik.enable=false
+  #   ports:
+  #     - "10050:10050"
 
 volumes:
   postgresql-data:
