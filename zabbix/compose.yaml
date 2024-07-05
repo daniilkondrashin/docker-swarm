@@ -20,6 +20,10 @@ services:
         constraints: [node.role == manager]
       labels:
         - traefik.enable=false
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 
   zabbix-server:
     image: zabbix/zabbix-server-pgsql:latest
@@ -45,6 +49,10 @@ services:
         constraints: [node.role == manager]
       labels:
         - traefik.enable=false
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 
   zabbix-web-nginx-pgsql:
     image: zabbix/zabbix-web-nginx-pgsql:latest
@@ -67,6 +75,10 @@ services:
       replicas: 1
       placement:
         constraints: [node.role == manager]
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
       labels:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
