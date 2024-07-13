@@ -15,14 +15,14 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.routers.portainer-http.rule=Host(`grafana.viomitra.ru`)
-        - traefik.http.routers.portainer-http.entrypoints=http
-        - traefik.http.routers.portainer-http.middlewares=https-redirect
-        - traefik.http.routers.portainer-https.rule=Host(`grafana.viomitra.ru`)
-        - traefik.http.routers.portainer-https.entrypoints=https
-        - traefik.http.routers.portainer-https.tls=true
-        - traefik.http.routers.portainer-https.tls.certresolver=le
-        - traefik.http.services.portainer.loadbalancer.server.port=3000
+        - traefik.http.routers.grafana-http.rule=Host(`grafana.viomitra.ru`)
+        - traefik.http.routers.grafana-http.entrypoints=http
+        - traefik.http.routers.grafana-http.middlewares=https-redirect
+        - traefik.http.routers.grafana-https.rule=Host(`grafana.viomitra.ru`)
+        - traefik.http.routers.grafana-https.entrypoints=https
+        - traefik.http.routers.grafana-https.tls=true
+        - traefik.http.routers.grafana-https.tls.certresolver=le
+        - traefik.http.services.grafana.loadbalancer.server.port=3000
     volumes:
       - type: volume
         source: grafana-data
